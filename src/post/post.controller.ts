@@ -37,6 +37,13 @@ export class PostController {
   }
 
   @ApiBearerAuth()
+  // @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  getPost(@Param('id', ParseIntPipe) postId: number) {
+    return this.postService.getPost(postId);
+  }
+
+  @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Delete('delete/:id')
   delete(@Param('id', ParseIntPipe) postId: number, @Req() request: Request) {

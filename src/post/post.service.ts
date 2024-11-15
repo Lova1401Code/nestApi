@@ -17,6 +17,33 @@ export class PostService {
     return { data: 'post created' };
   }
 
+  // récupération d'un post
+  async getPost(postId: number) {
+    const post = await this.prismaService.post.findUnique({
+      where: { postId },
+      include: {
+        user: {
+          select: {
+            username: true,
+            email: true,
+            password: false,
+          },
+        },
+        comments: {
+          include: {
+            user: {
+              select: {
+                username: true,
+                email: true,
+                password: false,
+              },
+            },
+          },
+        },
+      },
+    });
+    return post;
+  }
   //   récupération des utilisateurs
   async getAll() {
     const posts = await this.prismaService.post.findMany({
